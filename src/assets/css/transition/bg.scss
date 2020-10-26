@@ -1,0 +1,26 @@
+@keyframes bgColor {
+    0% {
+
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+
+    30% {
+        opacity: 0;
+    }
+    40% {
+        transform: translate(0px, 20px);
+    }
+
+    41% {
+
+        transform: translate(-20PX, 0PX);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(0);
+        opacity: 1;
+    }
+
+}

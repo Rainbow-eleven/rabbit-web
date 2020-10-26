@@ -1,0 +1,28 @@
+@keyframes anim {
+    0% {
+
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+
+    30%{
+        opacity: 0;
+    }
+    51% {
+        transform: translate(300px, 0px);
+    }
+
+    52% {
+
+        transform: translate(-300PX, 0PX);
+        opacity: 0;
+    }
+    75%{
+        opacity: 0;
+    }
+    100% {
+        transform: translate(0);
+        opacity: 1;
+    }
+
+}

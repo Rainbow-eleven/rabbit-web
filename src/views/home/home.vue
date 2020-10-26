@@ -24,6 +24,19 @@ export default {
     banner,
     menuee,
   },
+  methods: {
+    async login() {
+      let user = {
+        account: "qiu3291002845@gmail.com",
+        password: "123456",
+      };
+      let data = await this.$axios.post("/login", user);
+      console.log(data);
+    },
+  },
+  created() {
+    // this.login();
+  },
 };
 </script>
 <style lang='scss' scoped>

@@ -20,7 +20,7 @@
                 v-for="(item, index) in classArr"
                 :key="index"
                 :class="{ active: index === classActive }"
-                @click="classClick(index)"
+                @click="classClick(index, item.src)"
               >
                 <p>
                   <span :class="[item.icon, 'iconfont']"></span>
@@ -29,11 +29,20 @@
               </li>
             </ul>
           </aside>
-          <article class="article">
-            <dl v-for="(item, index) in brandArr" :key="index">
-              <dt>{{ item.title }}</dt>
-              <dd v-for="(item, index) in item.arr" :key="index">{{ item }}</dd>
-            </dl>
+          <article :class="{ article: true }">
+            <ul :class="{ active: i_isactive }">
+              <li v-for="(item, index) in brandArr" :key="index">
+                <dl>
+                  <dt>{{ item.title }}</dt>
+                  <dd v-for="(item, index) in item.arr" :key="index">
+                    {{ item }}
+                  </dd>
+                </dl>
+                <div>
+                  <button style="font-size: 14px">更多>></button>
+                </div>
+              </li>
+            </ul>
           </article>
         </div>
       </div>
@@ -50,104 +59,44 @@ export default {
         { title: "以旧换新", classA: "#renewed" },
       ],
       navActive: 0,
-      classArr: [
-        {
-          icon: "icon-shouji1",
-          title: "手机维修",
-        },
-        {
-          icon: "icon-tablet",
-          title: "平板电脑维修",
-        },
-        {
-          icon: "icon-bijiben",
-          title: "笔记本维修",
-        },
-        {
-          icon: "icon-fangyingji-xian",
-          title: "摄影摄像维修",
-        },
-        {
-          icon: "icon-youxishoubing",
-          title: "智能数码维修",
-        },
-      ],
-      classActive: 2,
-      brandArr: [
-        {
-          title: "苹果",
-          arr: [
-            "苹果iPhone XS Max",
-            "苹果iPhone XS",
-            "苹果iPhone Xr",
-            "苹果iPhone X",
-          ],
-        },
-        {
-          title: "苹果",
-          arr: [
-            "苹果iPhone XS Max",
-            "苹果iPhone XS",
-            "苹果iPhone Xr",
-            "苹果iPhone X",
-          ],
-        },
-        {
-          title: "苹果",
-          arr: [
-            "苹果iPhone XS Max",
-            "苹果iPhone XS",
-            "苹果iPhone Xr",
-            "苹果iPhone X",
-          ],
-        },
-        {
-          title: "苹果",
-          arr: [
-            "苹果iPhone XS Max",
-            "苹果iPhone XS",
-            "苹果iPhone Xr",
-            "苹果iPhone X",
-          ],
-        },
-        {
-          title: "苹果",
-          arr: [
-            "苹果iPhone XS Max",
-            "苹果iPhone XS",
-            "苹果iPhone Xr",
-            "苹果iPhone X",
-          ],
-        },
-        {
-          title: "苹果",
-          arr: [
-            "苹果iPhone XS Max",
-            "苹果iPhone XS",
-            "苹果iPhone Xr",
-            "苹果iPhone X",
-          ],
-        },
-        {
-          title: "苹果",
-          arr: [
-            "苹果iPhone XS Max",
-            "苹果iPhone XS",
-            "苹果iPhone Xr",
-            "苹果iPhone X",
-          ],
-        },
-      ],
+      classArr: null,
+      classActive: 0,
+      brandArr: null,
+      i_isactive: true,
     };
   },
   methods: {
-    classClick(i) {
+    classClick(i, src) {
+      this.i_isactive = true;
       this.classActive = i;
+      this.ObtainBrand(src);
+      this.isActiveFalse();
     },
+    isActiveFalse() {
+      setTimeout(() => {
+        this.i_isactive = false;
+      }, 1000);
+    },
+    async ObtainBrand(src) {
+      let arr = await import(`../data/${src}`);
+      this.brandArr = arr.default;
+    },
+    async ObtainClass() {
+      let arr = await import(`../data/classList`);
+      this.ObtainBrand("phoneList.js");
+      this.classArr = arr.default;
+    },
+  },
+  created() {
+    this.ObtainClass();
+
+    this.isActiveFalse();
   },
 };
 </script>
 <style lang="scss" scoped>
+@import "../../../assets/css/transition/bg.scss";
+@import "../../../assets/css/transition/anim.scss";
 ul {
   list-style: none;
   margin: 0;
@@ -169,7 +118,6 @@ ul {
         text-align: center;
         width: 200px;
         cursor: pointer;
-
         a {
           text-decoration: none;
           color: #999;
@@ -177,6 +125,7 @@ ul {
       }
     }
     .active {
+      animation: bgColor 0.3s linear;
       a {
         color: #fff;
       }
@@ -205,8 +154,8 @@ ul {
           padding-left: 30px;
           color: #fff;
           line-height: 50px;
-
           cursor: pointer;
+          transition: all 0.3s;
           span {
             margin-right: 20px;
             width: 15px;
@@ -222,27 +171,53 @@ ul {
         .active {
           background-color: #fff;
           color: #000;
+          animation: bgColor 0.5s linear;
+          transition: 0.5s;
           span {
             color: #000;
           }
         }
       }
+
       .article {
         box-shadow: #999 2px 5px 5px;
         padding-top: 20px;
-        padding-right: 80px;
+        padding-right: 20px;
         height: 450px;
         background: #fff;
-        dl {
-          display: flex;
-          line-height: 40px;
-          dt {
-            font-size: 18px;
-            margin: 0 30px;
-          }
-          dd {
-            font-size: 15px;
-            margin: 0 10px;
+        width: 800px;
+
+        .active {
+          animation: anim 0.8s linear;
+        }
+        ul {
+          li {
+            display: flex;
+            line-height: 40px;
+            justify-content: space-between;
+            dl {
+              display: flex;
+              dt {
+                font-size: 18px;
+                margin: 0 30px;
+              }
+              dd {
+                font-size: 15px;
+                display: inline-block;
+                margin: 0 10px;
+              }
+            }
+            button {
+              width: 60px;
+              height: 30px;
+              padding: 5px;
+              font-size: 14px;
+              text-align: center;
+              line-height: 100%;
+              background-color: #fff;
+              border: 1px solid #ccc;
+              outline-color: #ccc;
+            }
           }
         }
       }

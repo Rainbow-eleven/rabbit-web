@@ -1,7 +1,7 @@
 <template>
   <div class="guild">
     <div class="img">
-      <img :src="item.imgUrl" alt="" />
+      <span :class="['iconfont', item.icon]"></span>
     </div>
     <div class="content">
       <h5>{{ item.title }}</h5>
@@ -10,18 +10,30 @@
   </div>
 </template>
 <script>
+import "../css/iconfont.css";
+
 export default {
   props: ["item"],
 };
 </script>
 <style lang="scss" scoped>
+ul {
+  list-style: none;
+}
 .guild {
   display: flex;
   color: #fff;
   .img {
-    width: 50px;
-    img {
-      width: 100%;
+    margin-top: 8px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span {
+      font-size: 40px;
+      color: #83d838;
+      font-weight: bold;
     }
   }
   .content {

@@ -45,6 +45,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+ul {
+  list-style: none;
+}
 .banner {
   background: #494949;
   .content {

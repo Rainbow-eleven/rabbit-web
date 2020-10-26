@@ -4,19 +4,20 @@
       <img :src="imgUrl" alt="" />
     </div>
     <div class="title">
-      <p>{{ title }}</p>
+      <p>{{ title }} {{id }}</p>
     </div>
   </div>
 </template>
 <script>
 export default {
-  props: ["imgUrl", "title"],
+  props: ["imgUrl", "title", "id"],
 };
 </script>
 <style lang="scss" scoped>
 .phoneCar {
-  width: 200px;
-  display: inline-block;
+  float: left;
+  height: 240px;
+  width: 100%;
   .img {
     width: 100%;
     text-align: center;
