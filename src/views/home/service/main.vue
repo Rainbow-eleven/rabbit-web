@@ -49,13 +49,7 @@ import "../css/iconfont.css";
 export default {
   data() {
     return {
-      classList: [
-        { class: "手机", js: "phoneLogoData.js" },
-        { class: "笔记本", js: "noteBookLogoData.js" },
-        { class: "平板电脑", js: "flatLogoData.js" },
-        { class: "摄影摄像", js: "cameraLogoData.js" },
-        { class: "智能数码", js: "digitalLogoData.js" },
-      ],
+      classList: null,
       brandLogoList: null,
       phoneList: null,
       classActive: 0,
@@ -75,7 +69,7 @@ export default {
   methods: {
     classClick(i) {
       this.classActive = i;
-      this.brandlogin(i);
+      this.brandlogo(i);
     },
     brandClick(i, src) {
       this.brandActive = i;
@@ -95,19 +89,24 @@ export default {
       }
     },
 
-    async brandlogin(i) {
+    async brandlogo(i) {
       let js = this.classList[i].js;
       let arr = await import(`../data/${js}`);
       this.brandLogoList = arr.default;
+      this.phoneListData("applePhoneListData");
     },
     async phoneListData(src) {
       let arr = await import(`../data/${src}`);
       this.phoneList = arr.default;
     },
+    async classListData() {
+      let arr = await import(`../data/classListData`);
+      this.classList = arr.default;
+      this.brandlogo("0");
+    },
   },
   created() {
-    this.brandlogin("0");
-    this.phoneListData("applePhoneListData");
+    this.classListData();
   },
 };
 </script>

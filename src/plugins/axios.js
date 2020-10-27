@@ -3,7 +3,7 @@ import Vue from "vue";
 import axios from "axios";
 let config = {
   // 配置 默认路径
-  baseURL: "https://192.168.1.117:3000",
+  baseURL: "http://192.168.1.117:3000",
   // 延时
   // timeout: 60 * 1000, // Timeout
   // 跨域请求是否提供凭据信息  检查跨站点访问控制

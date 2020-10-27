@@ -38,10 +38,26 @@
                     {{ item }}
                   </dd>
                 </dl>
-                <div>
+                <div
+                  @click="
+                    () => {
+                      $router.push('/list');
+                    }
+                  "
+                >
                   <button style="font-size: 14px">更多>></button>
                 </div>
               </li>
+              <div
+                class="lvbut"
+                @click="
+                  () => {
+                    $router.push('/list');
+                  }
+                "
+              >
+                更多手机品牌 &gt;
+              </div>
             </ul>
           </article>
         </div>
@@ -89,7 +105,6 @@ export default {
   },
   created() {
     this.ObtainClass();
-
     this.isActiveFalse();
   },
 };
@@ -183,7 +198,7 @@ ul {
         box-shadow: #999 2px 5px 5px;
         padding-top: 20px;
         padding-right: 20px;
-        height: 450px;
+        height: 470px;
         background: #fff;
         width: 800px;
 
@@ -191,6 +206,17 @@ ul {
           animation: anim 0.8s linear;
         }
         ul {
+          .lvbut {
+            text-align: center;
+            line-height: 35px;
+            width: 150px;
+            height: 40px;
+            border: #71c02e 2px solid;
+            border-radius: 12px;
+            color: #71c02e;
+            margin-left: 30px;
+            cursor: pointer;
+          }
           li {
             display: flex;
             line-height: 40px;
