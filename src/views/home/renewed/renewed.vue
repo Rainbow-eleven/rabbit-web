@@ -37,8 +37,8 @@ export default {
   },
   methods: {
     async obtainHotList() {
-      let arr = await import("../data/hotPhoneList");
-      this.phoneList = arr.default;
+      let { data } = await this.$axios.get("/model");
+      this.phoneList = data.data;
     },
     async obtainGuildList() {
       let arr = await import("../data/serviceGuildList");

@@ -1,16 +1,16 @@
 <template>
   <div class="phoneCar">
     <div class="img">
-      <img :src="imgUrl" alt="" />
+      <img :src="item.faceImg" alt="" />
     </div>
     <div class="title">
-      <p>{{ title }} {{id }}</p>
+      <p>{{ item.modelName }} {{ item.topPrice }}</p>
     </div>
   </div>
 </template>
 <script>
 export default {
-  props: ["imgUrl", "title", "id"],
+  props: ["item"],
 };
 </script>
 <style lang="scss" scoped>

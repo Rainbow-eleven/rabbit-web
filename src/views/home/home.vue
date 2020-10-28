@@ -26,16 +26,12 @@ export default {
   },
   methods: {
     async login() {
-      let user = {
-        account: "qiu3291002845@gmail.com",
-        password: "123456",
-      };
-      let data = await this.$axios.post("/login", user);
-      console.log(data);
+      // let { data } = await this.$axios.get("/classify");
+      // console.log(data);
     },
   },
   created() {
-    // this.login();
+    this.login();
   },
 };
 </script>

@@ -20,11 +20,12 @@
                 v-for="(item, index) in classArr"
                 :key="index"
                 :class="{ active: index === classActive }"
-                @click="classClick(index, item.src)"
+                @click="classClick(index, item.id)"
               >
                 <p>
-                  <span :class="[item.icon, 'iconfont']"></span>
-                  {{ item.title }}
+                  <!-- <span :class="[item.icon, 'iconfont']"></span> -->
+                  <img :src="item.icon" alt="" />
+                  {{ item.classifyName }}
                 </p>
               </li>
             </ul>
@@ -33,9 +34,9 @@
             <ul :class="{ active: i_isactive }">
               <li v-for="(item, index) in brandArr" :key="index">
                 <dl>
-                  <dt>{{ item.title }}</dt>
-                  <dd v-for="(item, index) in item.arr" :key="index">
-                    {{ item }}
+                  <dt>{{ item.brandName }}</dt>
+                  <dd v-for="(item, index) in item.models" :key="index">
+                    {{ item.modelName }}
                   </dd>
                 </dl>
                 <div
@@ -56,7 +57,7 @@
                   }
                 "
               >
-                更多手机品牌 &gt;
+                更多品牌 &gt;
               </div>
             </ul>
           </article>
@@ -77,15 +78,15 @@ export default {
       navActive: 0,
       classArr: null,
       classActive: 0,
-      brandArr: null,
+      brandArr: [],
       i_isactive: true,
     };
   },
   methods: {
-    classClick(i, src) {
+    classClick(i, id) {
       this.i_isactive = true;
       this.classActive = i;
-      this.ObtainBrand(src);
+      this.ObtainBrand(id);
       this.isActiveFalse();
     },
     isActiveFalse() {
@@ -93,19 +94,28 @@ export default {
         this.i_isactive = false;
       }, 1000);
     },
-    async ObtainBrand(src) {
-      let arr = await import(`../data/${src}`);
-      this.brandArr = arr.default;
+    async ObtainBrand(id) {
+      this.brandArr = [];
+      let { data } = await this.$axios.get(`/bcr/${id}`);
+      let dataArr = data.data.brands;
+      dataArr.map((item) => {
+        this.obtainModel(item.id);
+      });
+    },
+    async obtainModel(id) {
+      let { data } = await this.$axios.get(`/model/${id}`);
+      this.brandArr.push(data.data);
     },
     async ObtainClass() {
-      let arr = await import(`../data/classList`);
-      this.ObtainBrand("phoneList.js");
-      this.classArr = arr.default;
+      let { data } = await this.$axios.get("/classify");
+      this.classArr = data.data;
+
+      this.isActiveFalse();
+      this.ObtainBrand(this.classArr[0].id);
     },
   },
   created() {
     this.ObtainClass();
-    this.isActiveFalse();
   },
 };
 </script>
@@ -125,7 +135,7 @@ ul {
     width: 1080px;
     margin: 0 auto;
     background-color: #fff;
-    box-shadow: #ccc 0px 3px 3px;
+    box-shadow: #000 0px 1px 2px;
     ul {
       display: flex;
       li {
@@ -171,11 +181,13 @@ ul {
           line-height: 50px;
           cursor: pointer;
           transition: all 0.3s;
-          span {
+          img {
             margin-right: 20px;
             width: 15px;
             height: 15px;
             color: #fff;
+            width: 20px;
+            height: 20px;
           }
           p {
             font-size: 18px;
@@ -209,8 +221,8 @@ ul {
           .lvbut {
             text-align: center;
             line-height: 35px;
-            width: 150px;
-            height: 40px;
+            width: 120px;
+            height: 38px;
             border: #71c02e 2px solid;
             border-radius: 12px;
             color: #71c02e;
@@ -228,9 +240,14 @@ ul {
                 margin: 0 30px;
               }
               dd {
+                cursor: pointer;
                 font-size: 15px;
                 display: inline-block;
                 margin: 0 10px;
+                color: #666;
+              }
+              dd:hover {
+                color: #000;
               }
             }
             button {

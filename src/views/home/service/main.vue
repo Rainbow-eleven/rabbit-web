@@ -5,20 +5,20 @@
         v-for="(item, index) in classList"
         :class="{ active: index === classActive }"
         :key="index"
-        @click="classClick(index)"
+        @click="classClick(index, item.id)"
       >
-        {{ item.class }}
+        {{ item.classifyName }}
       </li>
     </ul>
     <ul class="brand">
       <li
-        v-for="(item, index) in brandLogoList"
+        v-for="(item, index) in brandList"
         :class="{ active: index === brandActive }"
         :key="index"
-        @click="brandClick(index, item.src)"
+        @click="brandClick(index, item.id)"
       >
         <div>
-          <span :class="[item.logo, 'iconfont']"></span>
+          <img :src="item.logo" alt="" />
         </div>
       </li>
     </ul>
@@ -30,14 +30,8 @@
         <span class="iconfont icon-icon-cmd-cell-icon-arrow-right"></span>
       </div>
       <ul class="contentUl" :style="{ marginLeft: phoneActive + 'px' }">
-        <li v-for="(item, index) in phoneList" class="contentli" :key="index">
-          <transition name="fade" mode="out-in">
-            <phoneCar
-              :imgUrl="item.imgUrl"
-              :title="item.title"
-              :id="item.id"
-            ></phoneCar>
-          </transition>
+        <li v-for="(item, index) in modelList" class="contentli" :key="index">
+          <phoneCar :item="item"></phoneCar>
         </li>
       </ul>
     </div>
@@ -50,11 +44,11 @@ export default {
   data() {
     return {
       classList: null,
-      brandLogoList: null,
-      phoneList: null,
+      brandList: null,
+      modelList: [],
       classActive: 0,
       brandActive: 0,
-      phoneCarActive: 1,
+      phoneCarActive: 0,
     };
   },
   components: {
@@ -67,17 +61,17 @@ export default {
     },
   },
   methods: {
-    classClick(i) {
+    classClick(i, id) {
       this.classActive = i;
-      this.brandlogo(i);
+      this.brandlogo(id);
     },
-    brandClick(i, src) {
+    brandClick(i, id) {
       this.brandActive = i;
-      this.phoneListData(src);
+      this.obtainModel(id);
     },
     addsub(s) {
       if (s === "add") {
-        if (parseInt(this.phoneList.length / 5) === this.phoneCarActive) {
+        if (parseInt(this.modelList.length / 5) === this.phoneCarActive) {
           this.phoneCarActive = 0;
         } else {
           this.phoneCarActive++;
@@ -88,21 +82,20 @@ export default {
         }
       }
     },
-
-    async brandlogo(i) {
-      let js = this.classList[i].js;
-      let arr = await import(`../data/${js}`);
-      this.brandLogoList = arr.default;
-      this.phoneListData("applePhoneListData");
+    async brandlogo(id) {
+      let { data } = await this.$axios.get(`/bcr/${id}`);
+      this.brandList = data.data.brands;
+      this.obtainModel(this.brandList[this.brandActive].id);
     },
-    async phoneListData(src) {
-      let arr = await import(`../data/${src}`);
-      this.phoneList = arr.default;
+    async obtainModel(id) {
+      let { data } = await this.$axios.get(`/model/${id}`);
+      this.modelList = data.data.models;
+      console.log(this.modelList);
     },
     async classListData() {
-      let arr = await import(`../data/classListData`);
-      this.classList = arr.default;
-      this.brandlogo("0");
+      let { data } = await this.$axios.get("/classify");
+      this.classList = data.data;
+      this.brandlogo(this.classList[0].id);
     },
   },
   created() {
@@ -125,10 +118,9 @@ ul {
   display: flex;
   border-top: 1px solid #f8f8f8;
   border-bottom: 1px solid #83d838;
-  justify-content: space-around;
   & > * {
     cursor: pointer;
-    width: 20%;
+    width: 24.5%;
     text-align: center;
     padding: 15px;
     font-size: 15px;
@@ -147,7 +139,6 @@ ul {
   height: 220px;
   position: relative;
   width: 100%;
-  overflow: hidden;
   padding: 0 20px;
   cursor: pointer;
   .contentUl {
@@ -188,15 +179,15 @@ ul {
 }
 .brand {
   display: flex;
-  justify-content: space-around;
   background: #f6f6f6;
   li {
     cursor: pointer;
     padding: 12px 0;
-    width: 12%;
+    width: 200px;
     text-align: center;
-    span {
-      font-size: 25px;
+    img {
+      width: 30px;
+      text-align: center;
     }
   }
   .active {

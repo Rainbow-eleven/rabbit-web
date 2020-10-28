@@ -7,7 +7,7 @@ let config = {
   // 延时
   // timeout: 60 * 1000, // Timeout
   // 跨域请求是否提供凭据信息  检查跨站点访问控制
-  withCredentials: true, // Check cross-site Access-Control
+  withCredentials: false, // Check cross-site Access-Control
 };
 const _axios = axios.create(config);
 // axios 请求拦截器  包含[请求头以及请求参数等等]

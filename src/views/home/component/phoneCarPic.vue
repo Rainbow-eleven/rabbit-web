@@ -1,14 +1,14 @@
 <template>
   <div class="Car">
     <div class="img">
-      <img :src="item.imgUrl" alt="" />
+      <img :src="item.faceImg" alt="" />
     </div>
     <div class="title">
-      <p>{{ item.title }}</p>
+      <p>{{ item.modelName }}</p>
     </div>
     <div class="pic">
       <p>
-        官方售价<span>￥{{ item.pic }}起</span>
+        官方售价<span>￥{{ item.topPrice }}起</span>
       </p>
     </div>
   </div>
