@@ -90,7 +90,6 @@ export default {
     async obtainModel(id) {
       let { data } = await this.$axios.get(`/model/${id}`);
       this.modelList = data.data.models;
-      console.log(this.modelList);
     },
     async classListData() {
       let { data } = await this.$axios.get("/classify");
@@ -186,7 +185,7 @@ ul {
     width: 200px;
     text-align: center;
     img {
-      width: 30px;
+      width: 45px;
       text-align: center;
     }
   }
