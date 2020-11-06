@@ -1,34 +1,48 @@
 <template>
   <div class="search">
-    <div class="small-ad" v-if="$route.path == '/'">
+    <div
+      class="small-ad"
+      v-if="
+        $route.path == '/' ||
+        $route.path == '/list' ||
+        $route.path == '/Offer' ||
+        $route.path == '/personal'
+      "
+    >
       <img src="./logo.jpg" class="logoImg" />
       <img src="./01.jpg" alt="" />
       <p align="right">1分钟快速备份手机数据轻松操作快如闪电</p>
     </div>
-    <div class="small-ad" v-else-if="$route.path == '/personal'">
+    <div
+      class="small-ad"
+      v-else-if="
+        $route.path == '/MaintainAssess' || $route.path == '/CustomerService'
+      "
+    >
       <img src="./logo.jpg" class="logoImg" />
       <ul>
         <li>旧机维修</li>
         <!-- 判断旧机维修是否显示 -->
-        <li v-if="$route.path == '/'">以旧换新</li>
-        <!-- <li v-else-if="$route.path == '/personal'">以旧换新</li> -->
+        <li
+          v-if="
+            $route.path == '/FaultState' || $route.path == '/MaintainAssess'
+          "
+        >
+          以旧换新
+        </li>
       </ul>
     </div>
-    <div class="inputsearch" v-if="$route.path == '/'">
-      <div class="input-group mb-3">
-        <input
-          type="text"
-          class="form-controle"
-          @keydown.enter="buttonSearch"
-          v-model="inputContent"
-          placeholder="请输入机器型号"
-        />
-        <button class="search-bar" @click="buttonSearch">
-          <span class="iconfont icon-linedesign-12 iconf"></span>
-        </button>
-      </div>
-    </div>
-    <div class="progres" v-else-if="$route.path == '/personal'">
+    <searchBar
+      v-if="
+        $route.path == '/' ||
+        $route.path == '/list' ||
+        $route.path == '/FaultState' ||
+        $route.path == '/MaintainAssess' ||
+        $route.path == '/personal'
+      "
+    ></searchBar>
+
+    <div class="progres" v-else-if="$router.path == '/personal'">
       <div class="input-group mb-3">
         <!-- 判断旧机维修一级页 -->
         <div class="progress progressStyle" v-if="$route.path == '/personal'">
@@ -42,7 +56,10 @@
           ></div>
         </div>
         <!-- 判断旧机维修二级页                 *****************还未定义 -->
-        <div class="progress progressStyle" v-else-if="$route.path == '/'">
+        <div
+          class="progress progressStyle"
+          v-else-if="$route.path == '/CustomerService'"
+        >
           <div
             class="progress-bar"
             role="progressbar"
@@ -68,24 +85,16 @@
 </template>
 <script>
 import "../iconfont.css";
+import searchBar from "./searchBar";
 export default {
   name: "search",
-  // inputContent: "",
+  components: {
+    searchBar,
+  },
   data() {
-    return {
-      inputContent: "",
-    };
+    return {};
   },
-  methods: {
-    buttonSearch() {
-      if (this.inputContent == "") {
-        alert(this.inputContent);
-      } else {
-        alert(this.inputContent);
-        this.inputContent = "";
-      }
-    },
-  },
+  methods: {},
 };
 </script>
 <style scoped>
@@ -95,11 +104,11 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1.875rem;
 }
 .logoImg {
   margin-right: 2.5rem;
 }
-
 .small-ad {
   width: 26.875rem;
   display: flex;
@@ -135,8 +144,8 @@ export default {
 }
 .search-bar {
   width: 3.75rem;
-  border: 2px solid lawngreen;
-  background: chartreuse;
+  border: 2px solid #83d838;
+  background: #83d838;
 }
 .iconf {
   font-size: 1.75rem;
@@ -153,28 +162,31 @@ export default {
 .progressStyle {
   width: 12.5rem;
   height: 0.375rem;
+  margin: 0 auto;
 }
 .progres .WordCount {
   width: 12.5rem;
   justify-content: space-between;
   display: flex;
-  margin-top: -2.1875rem;
+  margin: 0 auto;
+  margin-top: -1.875rem;
   z-index: 5;
 }
 .progres .WordCount li {
-  width: 1.875rem;
-  height: 1.875rem;
+  width: 1.25rem;
+  height: 1.25rem;
   border-radius: 50%;
   background: #0d6efd;
-  line-height: 1.875rem;
+  line-height: 1.25rem;
   color: #fff;
+  font-size: 0.75rem;
 }
 .TextPrompt {
-  width: 12.5rem;
+  width: 15rem;
   justify-content: space-between;
   display: flex;
 }
 .TextPrompt li {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="home-nav">
       <header>
         <div class="left-area">
-          邯郸市<span>
+          {{ address }}市<span>
             <svg
               width="1em"
               height="1em"
@@ -17,11 +17,16 @@
                 d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
               /></svg
           ></span>
+          <addresse
+            class="addresse"
+            @addressClick="addressClick"
+            :address="address"
+          ></addresse>
         </div>
         <div class="right-nav">
           <ul>
             <li>
-              <router-link to="/personal" class="prompt-hover">
+              <router-link to="/" class="prompt-hover">
                 登录
                 <div class="Mouse-prompt">
                   <span class="iconfont icon-lingxing iconfont-lingxing"></span
@@ -62,20 +67,27 @@
 <script>
 import search from "../Home/search/search";
 import bottomFooter from "./search/footer";
+import addresse from "./search/address";
 import "./iconfont.css";
 export default {
   name: "Home",
-  components: { search, bottomFooter },
+  components: { search, bottomFooter, addresse },
   data() {
     return {
+      address: "泊头",
       list: [
         { name: "购物车0件", url: "/" },
-        { name: "关于我们", url: "/" },
+        { name: "关于我们", url: "/personal" },
         { name: "企业回收", url: "/" },
         { name: "开放平台", url: "/" },
         { name: "帮助中心", url: "/" },
       ],
     };
+  },
+  methods: {
+    addressClick(e) {
+      this.address = e;
+    },
   },
 };
 </script>
@@ -91,6 +103,22 @@ ul {
 li {
   list-style: none;
 }
+.addresse {
+  position: absolute;
+  top: 3.125rem;
+  visibility: hidden;
+  overflow: hidden;
+  width: 0;
+  height: 0;
+  transition: all 0.5s;
+}
+.left-area:hover .addresse {
+  position: absolute;
+  width: 25rem;
+  height: 31.25rem;
+  top: 3.125rem;
+  visibility: initial;
+}
 header {
   width: 1080px;
   height: 3.125rem;
@@ -104,6 +132,7 @@ header {
   font-size: 14px;
   cursor: pointer;
 }
+
 .right-nav {
   width: 31.25rem;
 }
