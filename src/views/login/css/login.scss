@@ -1,0 +1,119 @@
+* {
+  list-style: none;
+}
+.cursor {
+  cursor: pointer;
+}
+.inputBorder {
+  border: 1px solid red !important;
+}
+.loader {
+  border: 5px solid #f3f3f3; /* Light grey */
+  border-top: 5px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loginBox {
+  width: 100%;
+  position: relative;
+  .header {
+    width: 100%;
+    img {
+      width: 100%;
+    }
+  }
+  .login {
+    width: 700px;
+    height: 500px;
+    background: #fff;
+    .logo {
+      width: 100%;
+      text-align: center;
+    }
+    .ways {
+      width: 100%;
+      .center {
+        width: 350px;
+        height: auto;
+        .loginCut {
+          color: #ccc;
+          .active {
+            color: #000000;
+          }
+        }
+        .hint {
+          font-size: smaller;
+          line-height: 25px;
+          .color {
+            color: blue;
+            cursor: pointer;
+          }
+          .agreement {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            .center {
+              width: 800px;
+              border-radius: 5px;
+              height: auto;
+              background: #fff;
+              position: relative;
+              padding: 20px;
+              .close {
+                border: none;
+                background: none;
+                font-size: 24px;
+                position: absolute;
+                right: 10px;
+                top: 5px;
+              }
+              .confirm {
+                position: absolute;
+                right: 30px;
+                bottom: 10px;
+              }
+              .text {
+                letter-spacing: 5px;
+              }
+            }
+          }
+        }
+        .wx {
+          position: absolute;
+          top: 30%;
+          width: 300px;
+          height: 300px;
+          background: #fff;
+          text-align: center;
+          img {
+            width: 200px;
+            height: 200px;
+          }
+          .close {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: none;
+            border: none;
+            font-size: 30px;
+          }
+        }
+      }
+    }
+    .footer {
+      width: 100%;
+    }
+  }
+}

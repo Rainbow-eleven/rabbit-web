@@ -1,0 +1,94 @@
+.forgetPass {
+  position: absolute;
+  top: 30%;
+  left: 500px;
+  width: 600px;
+  height: 400px;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 100;
+  color: #fff;
+  .info {
+    color: #fff;
+    .inputItem {
+      width: 600px;
+      height: 35px;
+      line-height: 35px;
+      margin-left: 150px;
+      .infpEmail {
+        background: url("../image/b.png") no-repeat;
+        width: 300px;
+        height: 35px;
+        background-size: 100% 100%;
+        margin: 0 auto;
+        text-align: center;
+        input {
+          width: 100%;
+          border: none;
+          box-sizing: border-box;
+          height: 26px;
+          margin-left: 20px;
+          line-height: 26px;
+          background: none !important;
+          color: #00eaff;
+          outline: none;
+          margin-top: 4px;
+          font-size: 14px;
+        }
+        input::placeholder {
+          color: #ccc;
+        }
+      }
+    }
+    .inputItemT {
+      width: 300px;
+      height: 35px;
+      line-height: 35px;
+      margin-left: 150px;
+      .infpEmail {
+        background: url("../image/b.png") no-repeat;
+        width: 180px;
+        height: 35px;
+        background-size: 100% 100%;
+        margin: 0 auto;
+        text-align: center;
+        input {
+          width: 100%;
+          border: none;
+          box-sizing: border-box;
+          height: 26px;
+          margin-left: 20px;
+          line-height: 26px;
+          background: none !important;
+          color: #00eaff;
+          outline: none;
+          margin-top: 4px;
+          font-size: 14px;
+        }
+        input::placeholder {
+          color: #ccc;
+        }
+      }
+      button {
+        height: 35px;
+        float: right;
+        font-size: 14px;
+        width: 100px;
+      }
+      button:hover {
+        background: none;
+      }
+    }
+  }
+}
+
+.userSign {
+  text-align: center;
+}
+input,
+button a:focus {
+  outline: none;
+}
+.btn:focus {
+  box-shadow: none !important;
+}

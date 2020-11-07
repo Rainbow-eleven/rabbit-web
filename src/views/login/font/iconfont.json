@@ -1,0 +1,30 @@
+{
+  "id": "2152356",
+  "name": "rabbit",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3506877",
+      "name": "weibo",
+      "font_class": "weibo",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "8289024",
+      "name": "微信",
+      "font_class": "weixin",
+      "unicode": "e870",
+      "unicode_decimal": 59504
+    },
+    {
+      "icon_id": "14055554",
+      "name": "QQ",
+      "font_class": "QQ",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    }
+  ]
+}
