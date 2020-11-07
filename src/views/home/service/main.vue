@@ -1,8 +1,8 @@
 <template>
   <div class="main">
-    <ul class="class">
+    <ul class="class d-flex oveflow-hidden">
       <li
-        v-for="(item, index) in classList"
+        v-for="(item, index) in showClassList"
         :class="{ active: index === classActive }"
         :key="index"
         @click="classClick(index, item.id)"
@@ -11,40 +11,62 @@
       </li>
     </ul>
     <ul class="brand">
-      <li
-        v-for="(item, index) in brandList"
-        :class="{ active: index === brandActive }"
-        :key="index"
-        @click="brandClick(index, item.id)"
+      <div
+        v-if="brandList.length"
+        class="brandBox d-flex flex-wrap overflow-hidden"
       >
-        <div>
-          <img :src="item.logo" alt="" />
-        </div>
-      </li>
+        <li
+          v-for="(item, index) in showBrandList"
+          :class="{ active: index === brandActive }"
+          class="text-center d-flex justify-content-center align-items-center"
+          :key="index"
+          @click="brandClick(index, item.id)"
+        >
+          <img class="text-center" :src="item.logo" alt="" />
+        </li>
+      </div>
+      <div v-else class="error">
+        <p>暂无商品</p>
+      </div>
     </ul>
-    <div class="content">
-      <div class="left" @click="addsub('sub')">
+    <div class="content w-100">
+      <div class="left text-white mx-auto text-center" @click="addsub('sub')">
         <span class="iconfont icon-right"></span>
       </div>
-      <div class="right" @click="addsub('add')">
+      <div class="right text-white mx-auto text-center" @click="addsub('add')">
         <span class="iconfont icon-icon-cmd-cell-icon-arrow-right"></span>
       </div>
-      <ul class="contentUl" :style="{ marginLeft: phoneActive + 'px' }">
-        <li v-for="(item, index) in modelList" class="contentli" :key="index">
-          <phoneCar :item="item"></phoneCar>
-        </li>
+      <ul class="contentUl h-100">
+        <div
+          v-if="modelList.length > 0"
+          class="centerUl"
+          :style="{ left: phoneActive + 'px' }"
+        >
+          <li
+            v-for="(item, index) in modelList"
+            class="contentli float-left"
+            :key="index"
+          >
+            <phoneCar :item="item"></phoneCar>
+          </li>
+        </div>
+        <div v-else class="error">
+          <p>暂无商品</p>
+        </div>
       </ul>
     </div>
   </div>
 </template>
 <script>
+/* eslint-disable  */
 import phoneCar from "../component/phoneCar";
 import "../css/iconfont.css";
+
 export default {
   data() {
     return {
-      classList: null,
-      brandList: null,
+      classList: [],
+      brandList: [],
       modelList: [],
       classActive: 0,
       brandActive: 0,
@@ -56,17 +78,33 @@ export default {
   },
   computed: {
     phoneActive() {
-      let marginLeft = -(this.phoneCarActive * 188 * 5);
+      let marginLeft = -(this.phoneCarActive * 200 * 5);
       return marginLeft;
+    },
+    showClassList() {
+      let arr = this.classList.filter((item) => {
+        return item.status;
+      });
+      return arr;
+    },
+    showBrandList() {
+      let arr = this.brandList.filter((item) => {
+        return item.status;
+      });
+      return arr;
     },
   },
   methods: {
     classClick(i, id) {
       this.classActive = i;
+      this.brandActive = 0;
+      this.brandList = [];
       this.brandlogo(id);
     },
     brandClick(i, id) {
+      this.modelList = [];
       this.brandActive = i;
+      this.phoneCarActive = 0;
       this.obtainModel(id);
     },
     addsub(s) {
@@ -83,13 +121,26 @@ export default {
       }
     },
     async brandlogo(id) {
-      let { data } = await this.$axios.get(`/bcr/${id}`);
-      this.brandList = data.data.brands;
-      this.obtainModel(this.brandList[this.brandActive].id);
+      this.modelList = [];
+      let { data } = await this.$axios.get(`/brand`);
+      let brandList = data.data;
+      brandList.filter((item) => {
+        if (id === item.classifyId.id) {
+          this.brandList.push(item);
+        }
+      });
+      if (this.brandList.length > 0) {
+        this.obtainModel(this.brandList[this.brandActive].id);
+      }
     },
     async obtainModel(id) {
-      let { data } = await this.$axios.get(`/model/${id}`);
-      this.modelList = data.data.models;
+      let { data } = await this.$axios.get(`/model`);
+      let modelList = data.data;
+      modelList.filter((item) => {
+        if (id === item.brandId.id) {
+          this.modelList.push(item);
+        }
+      });
     },
     async classListData() {
       let { data } = await this.$axios.get("/classify");
@@ -105,21 +156,17 @@ export default {
 <style lang="scss" scoped>
 @import "../../../assets/css/transition/fade.scss";
 @import "../../../assets/css/transition/bg.scss";
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.main {
-  padding: 40px 30px;
+.error {
+  margin-left: 400px;
+  line-height: 60px;
 }
 .class {
-  display: flex;
-  border-top: 1px solid #f8f8f8;
+  border-top: 1px solid rgb(236, 236, 236);
   border-bottom: 1px solid #83d838;
   & > * {
     cursor: pointer;
-    width: 24.5%;
+    width: 20%;
+    color: #999;
     text-align: center;
     padding: 15px;
     font-size: 15px;
@@ -133,20 +180,23 @@ ul {
   }
 }
 .content {
-  width: 100%;
-  display: inline-block;
-  height: 220px;
+  height: 280px;
   position: relative;
-  width: 100%;
   padding: 0 20px;
   cursor: pointer;
   .contentUl {
-    transition: all 0.5s ease-in-out;
-    width: 1000%;
-    .contentli {
-      float: left;
-      width: 170px;
-      margin: 30px 9px;
+    position: relative;
+    overflow: hidden;
+    .centerUl {
+      position: absolute;
+      transition: all 0.5s ease-in-out;
+
+      width: 8000px;
+      .contentli {
+        width: 200px;
+        box-sizing: border-box;
+        margin: 30px 0px;
+      }
     }
   }
   .left {
@@ -155,9 +205,7 @@ ul {
     top: 40%;
     width: 20px;
     height: 50px;
-    margin: 0 auto;
     line-height: 50px;
-    color: #fff;
     border-radius: 8px;
     cursor: pointer;
     background: rgba(40, 40, 40, 0.3);
@@ -168,25 +216,38 @@ ul {
     top: 40%;
     width: 20px;
     height: 50px;
-    margin: 0 auto;
     line-height: 50px;
-    color: #fff;
     cursor: pointer;
     border-radius: 8px;
     background: rgba(40, 40, 40, 0.3);
   }
 }
 .brand {
-  display: flex;
   background: #f6f6f6;
+  height: 55px;
+  position: relative;
+  .brandBox {
+    justify-content: flex-start;
+  }
   li {
+    display: block;
+    width: 104px;
     cursor: pointer;
-    padding: 12px 0;
-    width: 200px;
-    text-align: center;
+    height: 55px;
+    overflow: hidden;
+
     img {
       width: 45px;
-      text-align: center;
+      filter: grayscale(100%);
+      filter: gray;
+    }
+  }
+  .wait {
+    position: absolute;
+    right: 0;
+    top: 0;
+    span {
+      font-size: 25px;
     }
   }
   .active {

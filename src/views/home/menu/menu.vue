@@ -1,41 +1,51 @@
 <template>
-  <div class="menu">
+  <div class="menu p-0">
     <div class="content">
-      <nav class="nav">
-        <ul>
+      <nav class="nav mx-auto">
+        <ul class="d-flex">
           <li
             v-for="(item, index) in navArr"
             :key="index"
             :class="{ active: index === navActive }"
+            class="mx-auto text-center font-weight-bold"
           >
             <a :href="item.classA">{{ item.title }}</a>
           </li>
         </ul>
       </nav>
-      <div class="center">
-        <div class="main">
-          <aside class="aside">
-            <ul>
+      <div class="center d-flex w-100">
+        <div class="main d-flex mx-auto">
+          <aside class="aside overflow-hidden">
+            <ul class="d-flex flex-column">
               <li
-                v-for="(item, index) in classArr"
+                v-for="(item, index) in showClassArr"
                 :key="index"
                 :class="{ active: index === classActive }"
                 @click="classClick(index, item.id)"
               >
-                <p>
-                  <!-- <span :class="[item.icon, 'iconfont']"></span> -->
+                <p class="m-0 p-0">
                   <img :src="item.icon" alt="" />
                   {{ item.classifyName }}
                 </p>
               </li>
             </ul>
           </aside>
-          <article :class="{ article: true }">
-            <ul :class="{ active: i_isactive }">
-              <li v-for="(item, index) in brandArr" :key="index">
-                <dl>
-                  <dt>{{ item.brandName }}</dt>
-                  <dd v-for="(item, index) in item.models" :key="index">
+          <article :class="{ article: true }" class="overflow-hidden">
+            <ul v-if="brandArr.length > 0" :class="{ active: i_isactive }">
+              <li
+                v-for="(item, index) in brandArr"
+                class="text-muted d-flex"
+                :key="index"
+              >
+                <dl class="m-0 p-0 d-flex flex-wrap">
+                  <dt class="text-dark">
+                    {{ item[0] && item[0].brandId.brandName }}
+                  </dt>
+                  <dd
+                    v-for="(item, index) in item"
+                    class="text-truncate"
+                    :key="index"
+                  >
                     {{ item.modelName }}
                   </dd>
                 </dl>
@@ -46,11 +56,16 @@
                     }
                   "
                 >
-                  <button style="font-size: 14px">更多>></button>
+                  <button
+                    style="font-size: 14px"
+                    class="more text-muted text-center"
+                  >
+                    更多>>
+                  </button>
                 </div>
               </li>
               <div
-                class="lvbut"
+                class="lvbut text-center"
                 @click="
                   () => {
                     $router.push('/list');
@@ -60,6 +75,7 @@
                 更多品牌 &gt;
               </div>
             </ul>
+            <div v-else>暂无数据</div>
           </article>
         </div>
       </div>
@@ -76,11 +92,19 @@ export default {
         { title: "以旧换新", classA: "#renewed" },
       ],
       navActive: 0,
-      classArr: null,
+      classArr: [],
       classActive: 0,
       brandArr: [],
       i_isactive: true,
     };
+  },
+  computed: {
+    showClassArr() {
+      let arr = this.classArr.filter((item) => {
+        return item.status;
+      });
+      return arr;
+    },
   },
   methods: {
     classClick(i, id) {
@@ -96,20 +120,38 @@ export default {
     },
     async ObtainBrand(id) {
       this.brandArr = [];
-      let { data } = await this.$axios.get(`/bcr/${id}`);
-      let dataArr = data.data.brands;
-      dataArr.map((item) => {
-        this.obtainModel(item.id);
+      let { data } = await this.$axios.get(`/brand`);
+      let dataArr = [];
+      data.data.map((item) => {
+        if (item.classifyId.id === id) {
+          dataArr.push(item.id);
+        }
       });
+      let modelArr = [];
+      dataArr.map(async (item) => {
+        let yy = await this.obtainModel(item);
+        if (yy) {
+          modelArr.push(yy);
+        }
+      });
+      this.brandArr = modelArr;
+      console.log(this.brandArr);
     },
     async obtainModel(id) {
-      let { data } = await this.$axios.get(`/model/${id}`);
-      this.brandArr.push(data.data);
+      let { data } = await this.$axios.get(`/model`);
+      let dataArr = [];
+      data.data.filter((item) => {
+        if (item.brandId && item.brandId.id === id) {
+          dataArr.push(item);
+        }
+      });
+      if (dataArr.length > 0) {
+        return dataArr;
+      }
     },
     async ObtainClass() {
       let { data } = await this.$axios.get("/classify");
       this.classArr = data.data;
-
       this.isActiveFalse();
       this.ObtainBrand(this.classArr[0].id);
     },
@@ -122,105 +164,88 @@ export default {
 <style lang="scss" scoped>
 @import "../../../assets/css/transition/bg.scss";
 @import "../../../assets/css/transition/anim.scss";
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
 .menu {
-  padding: 0 !important;
   background-color: #fff;
   .nav {
     position: relative;
     width: 1080px;
-    margin: 0 auto;
     background-color: #fff;
-    box-shadow: #000 0px 1px 2px;
     ul {
-      display: flex;
       li {
         padding: 10px 0;
-        text-align: center;
-        width: 200px;
+        width: 250px;
         cursor: pointer;
+        font-size: 20px;
         a {
           text-decoration: none;
-          color: #999;
+          color: #454545;
         }
       }
     }
     .active {
       animation: bgColor 0.3s linear;
+      background: #83d838;
+
       a {
         color: #fff;
       }
-      background: #83d838;
     }
   }
   .center {
-    background: url("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2972769053,1513981736&fm=26&gp=0.jpg")
+    background: url("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2672237493,2557152787&fm=26&gp=0.jpg")
       no-repeat;
     background-size: 100% 100%;
-    width: 100%;
     height: 400px;
-    display: flex;
     .main {
-      display: flex;
       width: 1080px;
-      margin: 0 auto;
       height: 400px;
       .aside {
         padding: 10px 0 0 0;
         background-color: rgba(0, 0, 0, 0.7);
-        width: 200px;
+        width: 250px;
         li {
-          padding: 10px 0;
+          padding: 15px 0;
           text-align: left;
           padding-left: 30px;
-          color: #fff;
-          line-height: 50px;
+          line-height: 35px;
           cursor: pointer;
           transition: all 0.3s;
           img {
-            margin-right: 20px;
-            width: 15px;
-            height: 15px;
-            color: #fff;
+            margin-right: 5px;
             width: 20px;
             height: 20px;
           }
           p {
+            color: #fff;
             font-size: 18px;
-            margin: 0;
-            padding: 0;
           }
         }
         .active {
           background-color: #fff;
-          color: #000;
           animation: bgColor 0.5s linear;
           transition: 0.5s;
-          span {
+          p {
             color: #000;
           }
         }
       }
-
       .article {
-        box-shadow: #999 2px 5px 5px;
-        padding-top: 20px;
-        padding-right: 20px;
+        padding: 20px 5px 80px 5px;
         height: 470px;
         background: #fff;
         width: 800px;
-
+        box-shadow: 0 0 5px #ccc;
+        z-index: 9;
+        position: relative;
         .active {
           animation: anim 0.8s linear;
         }
         ul {
           .lvbut {
-            text-align: center;
             line-height: 35px;
+            position: absolute;
+            left: 10px;
+            bottom: 8px;
             width: 120px;
             height: 38px;
             border: #71c02e 2px solid;
@@ -230,35 +255,42 @@ ul {
             cursor: pointer;
           }
           li {
-            display: flex;
+            position: relative;
             line-height: 40px;
-            justify-content: space-between;
+            padding-right: 80px;
             dl {
-              display: flex;
+              height: 45px;
+              overflow: hidden;
               dt {
                 font-size: 18px;
-                margin: 0 30px;
+                margin: 0 10px;
+                line-height: 45px;
+                font-weight: 800;
               }
               dd {
+                height: 45px;
+                line-height: 45px;
                 cursor: pointer;
                 font-size: 15px;
-                display: inline-block;
-                margin: 0 10px;
-                color: #666;
+                transition: all 0.5s;
+                margin: 0 8px;
+                letter-spacing: 0;
               }
               dd:hover {
-                color: #000;
+                color: #333;
+                transition: all 0.5s;
               }
             }
             button {
-              width: 60px;
+              position: absolute;
+              right: 10px;
+              top: 15px;
+              width: 65px;
               height: 30px;
-              padding: 5px;
-              font-size: 14px;
-              text-align: center;
+              padding: 8px;
               line-height: 100%;
               background-color: #fff;
-              border: 1px solid #ccc;
+              border: 0px;
               outline-color: #ccc;
             }
           }

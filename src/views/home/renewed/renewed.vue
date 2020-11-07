@@ -2,22 +2,22 @@
   <div class="renewed" id="renewed">
     <header class="header">
       <div class="left">
-        <h3>
+        <h3 class="font-weight-bold d-inline-block">
           以旧换新
           <div class="img">
             <img
-              src="https://czh1010.oss-cn-beijing.aliyuncs.com/images/20201027/08360226.png"
+              src="https://czh1010.oss-cn-beijing.aliyuncs.com/images/20201030/19331273.png"
               alt=""
             />
           </div>
         </h3>
-        <sub>旧机回收抵扣新机款</sub>
+        <sub class="text-dark d-inline-block">旧机回收抵扣新机款</sub>
       </div>
     </header>
     <guilds :arr="guildList"></guilds>
     <div class="content">
       <phoneCar
-        v-for="(item, index) in phoneList"
+        v-for="(item, index) in phoneLists"
         :key="index"
         :item="item"
       ></phoneCar>
@@ -31,9 +31,15 @@ export default {
   name: "renewed",
   data() {
     return {
-      phoneList: null,
-      guildList: null,
+      phoneList: [],
+      guildList: [],
     };
+  },
+  computed: {
+    phoneLists() {
+      let arr = this.phoneList.slice(0, 20);
+      return arr;
+    },
   },
   methods: {
     async obtainHotList() {
@@ -58,14 +64,13 @@ export default {
 <style lang="scss" scoped>
 .renewed {
   background-color: #fff;
-
+  box-shadow: 0px 0px 3px 3px #ccc;
   margin: 100px auto;
   width: 1080px;
   .header {
     padding: 20px;
     .left {
       h3 {
-        font-weight: bold;
         letter-spacing: 5px;
         position: relative;
         .img {
@@ -81,16 +86,12 @@ export default {
         font-size: 16px;
         margin-left: 10px;
         letter-spacing: 0px;
-        color: #999;
-      }
-      * {
-        display: inline-block;
       }
     }
   }
   .content {
     padding: 20px 0;
-    * {
+    & > * {
       width: 19.5%;
       display: inline-block;
     }

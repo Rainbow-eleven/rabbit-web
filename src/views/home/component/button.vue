@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button>{{ text }}</button>
+    <button class="border-0 text-white">{{ text }}</button>
   </div>
 </template>
 <script>
@@ -12,11 +12,10 @@ export default {
 button {
   width: 120px;
   height: 40px;
-  color: #fff;
   background-color: #83d838;
-  border-color: #83d838;
-  outline-color: #83d838;
+  outline: none;
   letter-spacing: 1px;
   font-size: 15px;
+  box-shadow: 0 0 1px #ccc;
 }
 </style>

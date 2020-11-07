@@ -1,11 +1,11 @@
 <template>
-  <div class="guild">
-    <div class="img">
-      <span :class="['iconfont', item.icon]"></span>
+  <div class="guild d-flex mx-auto text-white">
+    <div class="img d-flex justify-content-center">
+      <span class="font-wight-bold" :class="['iconfont', item.icon]"></span>
     </div>
     <div class="content">
-      <h5>{{ item.title }}</h5>
-      <p>{{ item.text }}</p>
+      <h5 class="m-0">{{ item.title }}</h5>
+      <p class="m-0">{{ item.text }}</p>
     </div>
   </div>
 </template>
@@ -21,32 +21,24 @@ ul {
   list-style: none;
 }
 .guild {
-  display: flex;
-  color: #fff;
   .img {
-    margin-top: 8px;
     width: 60px;
     height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
     span {
-      font-size: 40px;
+      font-size: 35px;
       color: #83d838;
-      font-weight: bold;
     }
   }
   .content {
     margin-left: 20px;
     h5 {
-      margin: 0;
-      line-height: 40px;
+      line-height: 30px;
       color: #f5f5f5;
     }
     p {
-      margin: 0;
-      line-height: 30px;
-      color: #9a9a9a;
+      line-height: 20px;
+      color: #d1cece;
     }
   }
 }

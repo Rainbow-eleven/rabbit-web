@@ -1,7 +1,7 @@
 <template>
   <div class="banner">
     <div class="content">
-      <ul>
+      <ul class="d-flex justify-content-between mx-auto">
         <li v-for="(item, index) in guildArr" :key="index">
           <guild :item="item"></guild>
         </li>
@@ -41,11 +41,7 @@ ul {
   .content {
     width: 1080px;
     margin: 0 auto;
-    padding: 25px 0;
-    ul {
-      display: flex;
-      justify-content: space-between;
-    }
+    padding: 15px 0;
   }
 }
 </style>  

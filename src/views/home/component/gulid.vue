@@ -1,7 +1,9 @@
 <template>
   <div>
-    <div class="content">
-      <div class="img">
+    <div class="content d-flex">
+      <div
+        class="img rounded-circle text-white d-flex justify-content-center align-items-center h-100 font-weight-bold"
+      >
         <span :class="[icon, 'iconfont']" style="font-size: 22px"></span>
       </div>
       <div class="title">
@@ -19,24 +21,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .content {
-  display: flex;
   height: 45px;
-  //   justify-content: space-around;
   .img {
     width: 45px;
-    height: 100%;
-    background: linear-gradient(to bottom, #f7d793, #e4b464);
-    border-radius: 50%;
-    color: #fff;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: linear-gradient(to bottom, #f8d996, #e4b464);
   }
   .title {
     line-height: 50px;
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 18px;
     margin-left: 10px;
   }
 }

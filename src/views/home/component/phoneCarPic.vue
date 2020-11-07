@@ -1,12 +1,12 @@
 <template>
   <div class="Car">
-    <div class="img">
-      <img :src="item.faceImg" alt="" />
+    <div class="img mx-auto w-75">
+      <img :src="item.faceImg" class="w-100 text-center" alt="" />
     </div>
-    <div class="title">
-      <p>{{ item.modelName }}</p>
+    <div class="title text-center font-weight-bold">
+      <p class="text-muted text-truncate">{{ item.modelName }}</p>
     </div>
-    <div class="pic">
+    <div class="pic text-center">
       <p>
         官方售价<span>￥{{ item.topPrice }}起</span>
       </p>
@@ -20,30 +20,25 @@ export default {
 </script>
 <style lang="scss" scoped>
 .Car {
-  margin: 20px 0;
-  width: 100%;
-  // box-shadow: #ccc 2px 2px 2px;
   cursor: pointer;
   .img {
-    width: 80%;
-    margin: 0 auto;
-
+    height: 180px;
     img {
       text-align: center;
-      width: 100%;
     }
   }
-  .title {
-    margin: 10px 0;
-    text-align: center;
-  }
-  .pic {
-    text-align: center;
-    p {
-      span {
-        color: red;
-        margin-left: 3px;
-      }
+}
+.title {
+  margin: 10px 0;
+  line-height: 40px;
+}
+.pic {
+  p {
+    line-height: 30px;
+    margin: 20px 0;
+    span {
+      color: rgb(248, 47, 57);
+      margin-left: 3px;
     }
   }
 }

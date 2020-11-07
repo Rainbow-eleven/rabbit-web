@@ -1,5 +1,5 @@
 <template>
-  <div class="guild">
+  <div class="guild d-flex justify-content-around">
     <guild
       v-for="(item, index) in arr"
       :key="index"
@@ -19,9 +19,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .guild {
-  padding: 30px 0;
+  padding: 15px 0;
+  margin: 30px 0;
   background-color: #f8f8f8;
-  display: flex;
-  justify-content: space-around;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div class="service" id="service">
-    <header class="header">
+    <header class="header d-flex justify-content-between">
       <div class="left">
-        <h3>旧机维修</h3>
-        <sub>维修/便捷/安全</sub>
+        <h3 class="font-weight-bold d-inline-block">旧机维修</h3>
+        <sub class="text-black d-inline-block">维修/便捷/安全</sub>
       </div>
       <div class="right">
         <but text="免费估价"></but>
@@ -45,25 +45,18 @@ export default {
   margin: 100px auto;
   background-color: #fff;
   width: 1080px;
-  * {
-    margin: 7px 0;
-  }
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
   .header {
-    display: flex;
-    justify-content: space-between;
+    margin: 20px 0;
+    padding: 0 20px;
     .left {
       h3 {
-        font-weight: bold;
         letter-spacing: 5px;
       }
       sub {
         font-size: 16px;
         margin-left: 10px;
         letter-spacing: 0px;
-        color: #999;
-      }
-      * {
-        display: inline-block;
       }
     }
   }

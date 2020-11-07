@@ -1,10 +1,10 @@
 <template>
-  <div class="phoneCar">
-    <div class="img">
+  <div class="phoneCar float-left">
+    <div class="img d-flex justify-content-center">
       <img :src="item.faceImg" alt="" />
     </div>
-    <div class="title">
-      <p>{{ item.modelName }} {{ item.topPrice }}</p>
+    <div class="title text-center font-weight-bold">
+      <p class="text-truncate">{{ item.modelName }}</p>
     </div>
   </div>
 </template>
@@ -15,18 +15,22 @@ export default {
 </script>
 <style lang="scss" scoped>
 .phoneCar {
-  float: left;
-  height: 240px;
   width: 100%;
+  height: 240px;
   .img {
     width: 100%;
-    text-align: center;
     img {
-      width: 100%;
+      width: 70%;
     }
+    height: 170px;
   }
   .title {
-    text-align: center;
+    margin-top: 20px;
+    p {
+      width: 120px;
+      height: 23px;
+      margin: 0 auto;
+    }
   }
 }
 </style>
