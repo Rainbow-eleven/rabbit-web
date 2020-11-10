@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export default {
   namespaced: true,
   state: {
+    infoId: "",
     Authorization: "", // token
     loading: true,
     forget: false, // 忘记密码框
@@ -121,6 +122,9 @@ export default {
         await this.dispatch("login/loginPost");
         state.loading = true;
       }
+    },
+    infoIds(state, value) {
+      state.infoId = value;
     },
   },
   actions: {
