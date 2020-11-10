@@ -54,19 +54,18 @@ export default {
       state.loginActive && this.commit("login/phoneLogin");
       !state.loginActive && this.commit("login/loginForm");
     },
-    phoneLogin(state) {
-      console.log(state);
+    async phoneLogin(state) {
       if (state.emailCode !== "") {
-        this.commit("login/sessionCode");
+        state.loading = false;
+        await this.commit("login/sessionCode");
+        state.loading = true;
       } else {
         state.popupError.bounced = true;
-        console.log("手机号或验证码错误");
       }
     },
     sessionCode(state) {
       let verifyCode = sessionStorage.getItem("verifyCode");
       if (state.verification == verifyCode) {
-        // this.$router.push("/home");
         router.push({ path: "/home" });
       } else {
         alert("验证码错误");
@@ -118,13 +117,14 @@ export default {
       } else {
         state.inputBorder = false;
         state.pwdBorder = false;
+        state.loading = false;
         await this.dispatch("login/loginPost");
+        state.loading = true;
       }
     },
   },
   actions: {
     async verification(state) {
-      console.log(state.state.emailCode);
       let { data } = await _axios
         .get(`email/${state.state.emailCode}`)
         .catch((err) => {
@@ -132,7 +132,6 @@ export default {
           state.popupError.bounced = true;
           state.popupError.bouncedInfo = "请求数据失败";
         });
-      console.log(data);
       sessionStorage.setItem("verifyCode", data.data.code);
     },
     async loginPost(state) {
@@ -147,10 +146,10 @@ export default {
           } else {
             this.commit("login/setToken", `Bearer ${data.data.token}`);
             router.push({ path: "/home" });
-            // this.$router.push("/home");
           }
         })
         .catch((err) => {
+          state.loading = true;
           alert("账号或密码错误");
           console.log(err);
         });

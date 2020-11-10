@@ -13,7 +13,6 @@ export const _axios = axios.create(config);
 // axios 请求拦截器  包含[请求头以及请求参数等等]
 _axios.interceptors.request.use(
   (config) => {
-    // console.log(config);
     if (config.url == "/login") {
       console.log("login");
     } else {

@@ -95,9 +95,8 @@ export default {
       } else {
         await this.$axios
           .post("/user", this.signForm)
-          .then((res) => {
+          .then(() => {
             window.location.reload();
-            console.log(res);
           })
           .catch((err) => {
             console.log(err);
@@ -109,9 +108,7 @@ export default {
       this.$emit("changeClose", this.signClose);
     },
   },
-  created() {
-    console.log(this.signForm);
-  },
+  created() {},
 };
 </script>
 <style lang="scss" scoped>
