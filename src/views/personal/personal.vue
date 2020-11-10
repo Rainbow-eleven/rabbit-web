@@ -1,47 +1,59 @@
 <template>
   <div class="centent">
-    <div class="accountStyle" v-if="numberUnits == 0">
-      <div class="nameImg">
-        <avatar></avatar>
+    <div v-if="$store.state.login.Info == ''">
+      <span @click="jumpLogin" class="jumpLogin">您还没有登录，请先登录</span>
+    </div>
+    <div v-else>
+      <div class="body" v-if="loading">
+        <div class="box">
+          <div class="loader-01"></div>
+        </div>
       </div>
-      <p class="usernames">{{ mineAccount.username }}</p>
-      <p class="ModifyInformation">
-        <button
-          class="passwordStyle btn iconfont icon-drxx04"
-          @click="modifyPassword"
-          data-toggle="tooltip"
-          data-placement="top"
-          title="修改密码"
-        ></button>
-        <button
-          class="information btn iconfont icon-xiugaixinxi"
-          @click="information"
-          data-toggle="tooltip"
-          data-placement="top"
-          title="修改信息"
-        ></button>
-      </p>
 
-      <div class="content">
-        <div class="PersonalModification">
-          <p><span class="iconfont icon-xingbie"></span>{{ inputSex }}</p>
-          <p>
-            <span class="iconfont icon-shimingrenzheng"></span>{{ Verified }}
-          </p>
-          <p>
-            <span class="iconfont icon-zhenshixingming"></span
-            >{{ mineAccount.name }}
-          </p>
-          <p>
-            <span class="iconfont icon-shouji"></span
-            >{{ mineAccount.cellphoneNumber }}
-          </p>
-          <p>
-            <span class="iconfont icon-shenfenzhenghao"></span
-            ><span class="carNostyle">{{ mineAccount.cardNo }}</span>
-          </p>
-          <p>创建时间：{{ time }}</p>
-          <div v-if="mineAccount.evaluation == ''">
+      <div class="accountStyle" v-if="numberUnits == 0">
+        <div class="nameImg">
+          <avatar></avatar>
+        </div>
+        <p class="usernames">{{ mineAccount.username }}</p>
+        <p class="ModifyInformation">
+          <button
+            class="passwordStyle btn iconfont icon-drxx04"
+            @click="modifyPassword"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="修改密码"
+          ></button>
+          <button
+            class="information btn iconfont icon-xiugaixinxi"
+            @click="information"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="修改信息"
+          ></button>
+        </p>
+
+        <div class="content">
+          <div class="PersonalModification">
+            <p><span class="iconfont icon-xingbie"></span>{{ inputSex }}</p>
+            <p>
+              <span class="iconfont icon-shimingrenzheng"></span>{{ Verified }}
+            </p>
+            <p>
+              <span class="iconfont icon-zhenshixingming"></span
+              >{{ mineAccount.name }}
+            </p>
+            <p>
+              <span class="iconfont icon-youxiang"></span
+              >{{ mineAccount.account }}
+            </p>
+            <p>
+              <span class="iconfont icon-shenfenzhenghao"></span
+              ><span class="carNostyle">{{
+                mineAccount.cardNo == "" ? "未认证" : mineAccount.cardNo
+              }}</span>
+            </p>
+            <p>创建时间：{{ time }}</p>
+            <!-- <div v-if="mineAccount.evaluation == ''">
             <span>个人评价：您还没有自己的评价</span>
           </div>
           <div
@@ -52,23 +64,23 @@
             <p class="Evaluation">
               {{ mineAccount.evaluation }}
             </p>
+          </div> -->
           </div>
         </div>
       </div>
+      <!-- v-else-if="numberUnits == 2" -->
+      <Password
+        :notice="mineAccount.password"
+        @ctChanges="ctChanges"
+        class="passwordClass"
+        :class="passwordClass"
+      ></Password>
+      <modifomy
+        class="modifomy"
+        :class="modifomyStyle"
+        @modifomyClick="modifomyClick"
+      ></modifomy>
     </div>
-    <!-- v-else-if="numberUnits == 2" -->
-    <Password
-      :notice="mineAccount.password"
-      @ctChanges="ctChanges"
-      class="passwordClass"
-      :class="passwordClass"
-    ></Password>
-    <modifomy
-      class="modifomy"
-      :class="modifomyStyle"
-      @modifomyClick="modifomyClick"
-      v-bind:mineAccount="mineAccount"
-    ></modifomy>
   </div>
 </template>
 <script>
@@ -76,6 +88,7 @@ import Password from "./component/changePassword";
 import avatar from "./component/avatar";
 import modifomy from "./component/modifomy";
 import "./iconfont/iconfont.css";
+import { _axios } from "@/plugins/axios.js";
 export default {
   name: "myAccount",
   components: {
@@ -86,28 +99,34 @@ export default {
 
   data() {
     return {
+      loading: false,
       modifomyStyle: "",
       numberUnits: 0,
       inputSex: "男",
       passwordClass: "",
       time: "",
+      headersOption: {
+        Authorization: `Bearer ${this.$store.state.login.token}`,
+      },
       mineAccount: {
-        faceUrl:
-          "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1561204147,3725236709&fm=26&gp=0.jpg",
-        username: "小男孩",
-        sex: 1,
-        evaluation: "这是一个非常牛逼的人爱我大家哦啊我等你哦啊都看看看单位可",
-        isAuthentication: 1,
-        name: "李子亮",
-        cardNo: "111111111111111111",
-        cellphoneNumber: "15603107927",
-        password: "1409410318",
-        createdTime: "2020-10-22T10:29:11.842Z",
-        updatedTime: "2020-10-29T07:38:32.000Z",
+        // faceUrl:
+        //   "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1561204147,3725236709&fm=26&gp=0.jpg",
+        // username: "小男孩",
+        // sex: 1,
+        // isAuthentication: 1,
+        // name: "李子亮",
+        // cardNo: "111111111111111111",
+        // cellphoneNumber: "15603107927",
+        // password: "1409410318",
+        // createdTime: "2020-10-22T10:29:11.842Z",
+        // updatedTime: "2020-10-29T07:38:32.000Z",
       },
     };
   },
   methods: {
+    jumpLogin() {
+      this.$router.push("/login");
+    },
     cancelModify() {
       this.numberUnits = 0;
     },
@@ -126,11 +145,17 @@ export default {
       this.passwordClass = "stylepassword";
     },
     async nameuser() {
-      let { data } = await this.$axios.get(`/user/1`);
-      console.log(data);
+      this.loading = true;
+      let { data } = await _axios.get(
+        `http://123.56.59.201/api/user/${this.$store.state.login.Info}`
+      );
+      this.mineAccount = data;
+      this.dadwas();
+      this.loading = false;
     },
     dadwas() {
       let timedate = new Date(this.mineAccount.createdTime);
+
       let timeFull = timedate.getFullYear();
       let timeMonth = timedate.getMonth();
       let timeDay = timedate.getDay();
@@ -138,20 +163,90 @@ export default {
       let timeMinut = timedate.getMinutes();
       let timeSeconds = timedate.getSeconds();
       this.time = `${timeFull}年 ${timeMonth}月${timeDay}日${timeHours}:${timeMinut}:${timeSeconds}`;
+      this.mineAccount.cardNo = this.mineAccount.cardNo.substr(0, 14) + "****";
     },
   },
   computed: {
     Verified() {
-      return this.mineAccount.isAuthentication == 0 ? "否" : "是";
+      return this.mineAccount.isAuthentication == 0 ? "未实名" : "已实名";
     },
   },
   mounted() {
+    console.log(this.$store.state.login.Info);
     this.nameuser();
-    this.dadwas();
   },
 };
 </script>
 <style scoped>
+.jumpLogin {
+  color: red;
+  cursor: pointer;
+}
+.body {
+  background: rgb(50, 57, 67);
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  margin: auto;
+
+  box-sizing: border-box;
+  font-family: sans-serif;
+  color: rgba(200, 200, 200, 0.5);
+  z-index: 999999;
+  border: 1px solid #000;
+}
+
+/* body *,
+body *:before,
+body *:after {
+  box-sizing: inherit;
+} */
+
+.box {
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  border-radius: 3px;
+  font-size: 30px;
+  color: rgba(255, 255, 255);
+  padding: 1em;
+  vertical-align: top;
+  -webkit-transition: 0.3s color, 0.3s border;
+  transition: 0.3s color, 0.3s border;
+  margin-top: 20%;
+}
+
+.loader-01 {
+  border: 0.2em dotted currentcolor;
+  border-radius: 50%;
+  -webkit-animation: 1s loader-01 linear infinite;
+  animation: 1s loader-01 linear infinite;
+}
+
+@-webkit-keyframes loader-01 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loader-01 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
 .modifomy {
   position: fixed;
   width: 100%;
@@ -189,10 +284,10 @@ export default {
 .accountStyle {
   width: 1080px;
   margin: 0 auto;
-  border-top: 1px solid #fff;
   text-align: left;
-  background: rgb(157, 231, 170);
   padding-bottom: 1.875rem;
+  border: 1px solid #999;
+  border-radius: 0.625rem;
 }
 .PersonalModification p {
   font-size: 1rem;
@@ -252,7 +347,7 @@ export default {
   font-size: 16px;
 }
 .content .PersonalModification > p {
-  padding: 0 50px;
+  padding: 0 38px;
 }
 .accountStyle .usernames {
   font-size: 18px;

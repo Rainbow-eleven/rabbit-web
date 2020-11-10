@@ -4,7 +4,6 @@
       <input
         type="text"
         class="form-controle"
-        :class="inputBackground"
         v-model="inputContent"
         placeholder="请输入机器型号"
       />
@@ -29,7 +28,6 @@ export default {
   data() {
     return {
       noSearch: "noSearch",
-      inputBackground: "",
       Commercial: "Commercialstyle",
       inputContent: "",
       item: [],
@@ -39,8 +37,8 @@ export default {
     async buttonSearch() {
       this.inputContent = this.inputContent.replace(/\s*/g, "");
       if (this.inputContent == "") {
-        this.inputBackground = "inputBackground";
-        this.item = "";
+        this.noSearch = "noSearch";
+        this.Commercial = "Commercialstyle";
       } else {
         const { data } = await this.$axios.get(
           `/model?keyword=${this.inputContent}`
@@ -96,6 +94,13 @@ export default {
   z-index: 999;
 }
 .Commercialstyle {
+  background: rgb(211, 252, 187);
+  margin-top: -16px;
+  border: 1px solid rgb(130, 155, 127);
+  text-align: left;
+  padding: 10px;
+  position: relative;
+  z-index: 999;
   visibility: hidden;
 }
 .Commercial li {
@@ -109,6 +114,7 @@ export default {
   color: #fff;
 }
 .inputsearch {
+  width: 20rem;
   margin-right: 1.25rem;
 }
 .inputsearch input {

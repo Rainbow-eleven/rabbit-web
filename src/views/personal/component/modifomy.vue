@@ -2,10 +2,13 @@
   <div class="modifyInformation">
     <div class="modify content rounded">
       <p>
+        <span class="iconfont icon-youxiang"></span>{{ mineAccount.account }}
+      </p>
+      <p>
         <span class="iconfont icon-yonghu"></span>
         <input
           type="text"
-          v-model="modifyName"
+          v-model="mineAccount.username"
           @blur="username"
           :class="modifystylename"
           @keyup="spacekey"
@@ -13,11 +16,6 @@
           placeholder="用户昵称"
         />
         <span v-bind:class="Numberpropmte">请输入用户名</span>
-      </p>
-      <p>
-        <span class="iconfont icon-xingbie"></span>
-        <input type="radio" v-model="modifysex" value="1" name="sex" />男
-        <input type="radio" v-model="modifysex" value="0" name="sex" />女
       </p>
       <p>
         <span
@@ -34,30 +32,17 @@
         <span class="iconfont icon-zhenshixingming"></span>
         <input
           type="text"
-          v-model="modifyisname"
+          v-model="mineAccount.name"
           class="stylemodify p-1 bg-black rounded"
           @keyup="spacekey"
           placeholder="姓名"
         />
       </p>
       <p>
-        <span class="iconfont icon-shouji"></span>
-        <input
-          type="number"
-          v-model="modifyNumber"
-          :class="stylemodify"
-          oninput="if(value.length>11) value=value.slice(0,11)"
-          @blur="phone"
-          class="shadow-sm p-1 bg-black rounded"
-          placeholder="手机号码"
-        />
-        <span :class="Numberpropmts">手机号输入不正确</span>
-      </p>
-      <p>
         <span class="iconfont icon-shenfenzhenghao"></span
         ><input
           type="number"
-          v-model="modifycardNo"
+          v-model="mineAccount.cardNo"
           :class="stylemodifycard"
           oninput="if(value.length>18) value=value.slice(0,18)"
           @blur="cardNo"
@@ -65,18 +50,7 @@
           placeholder="身份证号"
         /><span :class="Numberpropmt">身份证号是十八位</span>
       </p>
-      <div class="evaluationTotal">
-        <span class="evaluationName iconfont icon-pingjia"></span>
-        <p class="Evaluatione">
-          <textarea
-            cols="50"
-            rows="2"
-            v-model="dodifyEvaluation"
-            oninput="if(value.length>300) value=value.slice(0,300)"
-            class="shadow-sm p-1 bg-black rounded"
-          ></textarea>
-        </p>
-      </div>
+
       <button class="btn btn-default bg-primary modifys" @click="changes">
         确认修改
       </button>
@@ -88,17 +62,11 @@
 </template>
 <script>
 import ".././iconfont/iconfont.css";
+import { _axios } from "@/plugins/axios.js";
 export default {
   name: "modifomy",
-  props: ["mineAccount"], //传值
   data() {
     return {
-      dodifyEvaluation: this.mineAccount.evaluation,
-      modifysex: this.mineAccount.sex,
-      modifyisname: this.mineAccount.name,
-      modifycardNo: this.mineAccount.cardNo,
-      modifyNumber: this.mineAccount.cellphoneNumber,
-      modifyName: this.mineAccount.username,
       StyleModifomy: "StyleModifomy",
       Numberpropmte: "Numberpropmts",
       modifystylename: "stylemodify",
@@ -106,6 +74,15 @@ export default {
       Numberpropmt: "Numberpropmts",
       stylemodifycard: "stylemodify",
       stylemodify: "stylemodify",
+      mineAccount: {},
+      // mineAccountlist: {
+      //   username: "",
+      //   account: "",
+      //   cardNo: "",
+      //   faceUrl: "",
+      //   id: 1,
+      //   isAuthentication: "",
+      // },
     };
   },
   methods: {
@@ -113,7 +90,7 @@ export default {
       e.target.value = e.target.value.replace(/\s+/g, "");
     },
     phone() {
-      if (this.modifyNumber.length == 11) {
+      if (this.mineAccount.cellphoneNumber.length == 11) {
         this.Numberpropmts = "Numberpropmts";
         this.stylemodify = "stylemodify";
       } else {
@@ -123,7 +100,10 @@ export default {
       }
     },
     cardNo() {
-      if (this.modifycardNo.length == 18 || this.modifycardNo.length == 0) {
+      if (
+        this.mineAccount.cardNo.length == 18 ||
+        this.mineAccount.cardNo.length == 0
+      ) {
         this.stylemodifycard = "stylemodify";
         this.Numberpropmt = "Numberpropmts";
       } else {
@@ -133,7 +113,7 @@ export default {
       }
     },
     username() {
-      if (this.modifyName.length == 0) {
+      if (this.mineAccount.username.length == 0) {
         this.modifystylename = "stylemodifyJs";
         this.Numberpropmte = "Numberprompt";
         this.numberUnits = 1;
@@ -145,18 +125,28 @@ export default {
     cancelModify() {
       this.$emit("modifomyClick", "StyleModifomy");
     },
-    changes() {
-      if (this.modifyName == " ") {
+    async changes() {
+      if (this.mineAccount.username == " ") {
         this.username();
-      } else if (this.modifyNumber.length == 11) {
-        if (this.modifycardNo.length == 18 || this.modifycardNo.length == 0) {
+      } else {
+        if (
+          this.mineAccount.cardNo.length == 18 ||
+          this.mineAccount.cardNo.length == 0
+        ) {
+          window.location.reload();
           this.assignment();
           this.cancelModify();
+          delete this.mineAccount.createdTime;
+          delete this.mineAccount.updatedTime;
+          delete this.mineAccount.sex;
+          await this.$axios.put(
+            `http://123.56.59.201/api/user/${this.$store.state.login.Info}`,
+            this.mineAccount
+          );
+          console.log(this.mineAccount);
         } else {
           this.cardNo();
         }
-      } else {
-        this.phone();
       }
     },
     async assignment() {
@@ -169,26 +159,25 @@ export default {
         this.inputSex = "女";
         this.mineAccount.sex = 1;
       }
-      this.mineAccount.username = this.modifyName;
-      this.mineAccount.evaluation = this.dodifyEvaluation;
-      this.mineAccount.sex = this.modifysex;
-      this.mineAccount.name = this.modifyisname;
-      this.mineAccount.cardNo = this.modifycardNo;
-      this.mineAccount.cellphoneNumber = this.modifyNumber;
       console.log(this.mineAccount);
-      if (this.modifycardNo == "") {
+      if (this.mineAccount.cardNo == "") {
         this.mineAccount.isAuthentication = 0;
         console.log(this.mineAccount.cardNo);
       }
-      await this.$axios.put(`/user/${this.id}`, this.mineAccount);
+    },
+    async nameuser() {
+      let { data } = await _axios.get("http://123.56.59.201/api/user/1");
+      console.log(data);
+      this.mineAccount = data;
     },
   },
   computed: {
     Verified() {
-      return this.mineAccount.isAuthentication == 0
-        ? "未实名认证"
-        : "已实名认证";
+      return this.mineAccount.isAuthentication == 0 ? "未认证" : "已认证";
     },
+  },
+  created() {
+    this.nameuser();
   },
 };
 </script>
@@ -234,7 +223,7 @@ export default {
   position: relative;
 }
 .content > p {
-  width: 400px;
+  width: 280px;
   text-align: left;
   margin: 1.25rem auto;
 }

@@ -55,36 +55,70 @@ export default {
   data() {
     return {
       matchs: "matchstyle",
-      passwordname: this.notice,
-      oldPassword: "",
-      newPassword: "",
-      Password: "",
+      oldPassword: "", //1
+      newPassword: "", //2
+      Password: "", //3
     };
   },
   methods: {
-    confirmPassword() {
-      if (this.oldPassword == this.passwordname) {
-        //   判断新密码位数是否大于或等于8   旧密码不能为空
-        if (this.Password >= 8 && this.newPassword !== "") {
-          // 判断两次输入的旧密码是否相等
-          if (this.newPassword == this.Password) {
-            this.$emit("ctChanges", 0);
-            alert("密码修改成功");
-          } else {
-            alert("您两次输入的密码不一样");
-          }
+    async confirmPassword() {
+      if (
+        this.oldPassword !== "" &&
+        this.newPassword !== "" &&
+        this.Password !== ""
+      ) {
+        if (this.oldPassword == this.newPassword) {
+          alert("不能与旧密码一样");
         } else {
-          alert("你输入的新密码不符合正确格式");
+          let { data } = await this.axios.get(
+            `/user/${this.$store.state.login.Info}`
+          );
+          console.log(data);
+          await this.axios
+            .post("/user/volidateOldPass", {
+              id: data.id,
+              pass: this.oldPassword,
+            })
+            .then((res) => {
+              console.log(res);
+              if (res.statusCode == 500) {
+                alert("旧密码密码错误");
+              } else if (this.newPassword !== this.Password) {
+                alert("两次密码不一致");
+              } else {
+                this.$axios
+                  .post("/user/updatePass", {
+                    id: data.id,
+                    pass: this.oldPassword,
+                  })
+                  .then((data) => {
+                    if (data.statusCode == 500) {
+                      alert("请求失败");
+                    } else {
+                      alert("密码修改成功");
+                      this.cancelEdit();
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                    alert("请求失败");
+                  });
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              alert("数据请求失败");
+            });
         }
-      } else if (this.oldPassword == "") {
-        alert("请输入旧密码");
       } else {
-        alert("旧密码错误，请重试");
-        console.log(this.passwordname);
+        alert("信息为空");
       }
     },
     cancelEdit() {
-      this.$emit("ctChanges", 0);
+      (this.oldPassword = ""),
+        (this.newPassword = ""),
+        (this.Password = ""),
+        this.$emit("ctChanges", 0);
     },
     matchjs() {
       if (this.newPassword > 8 && this.newPassword == this.Password) {

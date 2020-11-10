@@ -1,7 +1,8 @@
 export const ModuleLogin = {
   state: {
     token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiMTQwOTQxMDMxOEBxcS5jb20iLCJwYXNzd29yZCI6IjEyMzQ1NiIsImlhdCI6MTYwNDYyNTU4NSwiZXhwIjoxNjA0NjI5MTg1fQ.j-D1ZQsvGfH0UAiO3qoPhbLOMMdJxco_4QfiZ-wPBuQ",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiMTIwODUwNTAxOUBxcS5jb20iLCJwYXNzd29yZCI6IjEyMzQ1Njc4OSIsImlhdCI6MTYwNTAwNjU0NiwiZXhwIjoxNjA1MDEwMTQ2fQ.A-f4KgfaYvvbn7wlw3AAc58t0h9Fkry9LuiyiUSHrSw",
+    Info: "",
   },
   namespaced: true,
 };

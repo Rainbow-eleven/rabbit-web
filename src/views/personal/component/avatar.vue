@@ -1,7 +1,7 @@
 <template>
   <div class="centerstyle">
     <EleUploadImage
-      action="http://192.168.1.101:3000/upload"
+      action="http://123.56.59.201/api/upload"
       v-model="image"
       :headers="headersOption"
       :responseFn="handleResponse"
