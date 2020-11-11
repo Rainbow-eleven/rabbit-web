@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import user from "./moduleUser";
+import list from './moduleList'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -13,6 +14,7 @@ export default new Vuex.Store({
   // 模块
   modules: {
     user,
+    list
   },
   // 计算属性
   getters: {},

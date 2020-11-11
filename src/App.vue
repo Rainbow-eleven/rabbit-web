@@ -1,11 +1,7 @@
 <template>
   <div id="app">
-    <div id="nav" class="text-center">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <transition name="fade" mode="out-in">
-      <router-view></router-view>
+      <router-view style="background-color: #f5f5f5"></router-view>
     </transition>
   </div>
 </template>
