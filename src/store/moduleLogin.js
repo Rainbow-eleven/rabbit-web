@@ -8,7 +8,7 @@ export default {
   namespaced: true,
   state: {
     infoId: "",
-    Authorization: "", // token
+    token: "", // token
     loading: true,
     forget: false, // 忘记密码框
     register: false, // 控制注册组件
@@ -48,7 +48,7 @@ export default {
   },
   mutations: {
     setToken(state, token) {
-      state.Authorization = token;
+      state.token = token;
       localStorage.setItem("token", token);
     },
     login(state) {

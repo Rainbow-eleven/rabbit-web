@@ -1,6 +1,7 @@
 "use strict";
 import Vue from "vue";
 import axios from "axios";
+
 let config = {
   // 配置 默认路径
   baseURL: "http://123.56.59.201/api/",
@@ -28,14 +29,14 @@ _axios.interceptors.request.use(
 );
 // axios 响应拦截器  包含[请求头以及请求参数等等]
 _axios.interceptors.response.use(
-  function(response) {
+  function (response) {
     return response;
   },
-  function(error) {
+  function (error) {
     return Promise.reject(error);
   }
 );
-Plugin.install = function(Vue) {
+Plugin.install = function (Vue) {
   Vue.axios = _axios;
   window.axios = _axios;
   Object.defineProperties(Vue.prototype, {
