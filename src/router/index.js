@@ -32,6 +32,11 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/list",
+    name: "List",
+    component: () => import("../views/productList/list.vue"),
+  },
 ];
 
 const router = new VueRouter({

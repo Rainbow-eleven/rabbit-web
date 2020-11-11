@@ -16,7 +16,7 @@ export default {
     pwdBorder: false, // 控制input密码框class
     emailCode: "", //邮箱号
     verification: "", //验证码
-    loginActive: true, // 控制登录切换
+    loginActive: false, // 控制登录切换
     loginForm: {
       account: "", //账号
       password: "", // 密码
@@ -51,9 +51,13 @@ export default {
       state.token = token;
       localStorage.setItem("token", token);
     },
-    login(state) {
+    async login(state) {
       state.loginActive && this.commit("login/phoneLogin");
       !state.loginActive && this.commit("login/loginForm");
+      let { data } = await _axios.get(
+        `user/account/${state.loginForm.account}`
+      );
+      this.commit("login/infoIds", data.data.id);
     },
     async phoneLogin(state) {
       if (state.emailCode !== "") {
@@ -146,6 +150,7 @@ export default {
         .then(({ data }) => {
           if (data.statusCode == 500) {
             alert("账号或密码不对");
+            state.loading = true;
             return;
           } else {
             this.commit("login/setToken", `Bearer ${data.data.token}`);

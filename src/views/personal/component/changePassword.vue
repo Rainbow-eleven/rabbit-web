@@ -70,11 +70,11 @@ export default {
         if (this.oldPassword == this.newPassword) {
           alert("不能与旧密码一样");
         } else {
-          let { data } = await this.axios.get(
-            `/user/${this.$store.state.login.Info}`
+          let { data } = await this.$axios.get(
+            `/user/${this.$store.state.login.infoId}`
           );
           console.log(data);
-          await this.axios
+          await this.$axios
             .post("/user/volidateOldPass", {
               id: data.id,
               pass: this.oldPassword,

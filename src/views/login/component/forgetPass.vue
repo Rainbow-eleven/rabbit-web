@@ -108,7 +108,6 @@ export default {
       let { data } = await this.$axios.get(
         `user/account/${this.forgetForm.account}`
       );
-      this.$store.commit("login/infoIds", data.data.id);
       await this.$axios
         .post("/user/updatePass", {
           id: data.data.id,

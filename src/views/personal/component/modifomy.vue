@@ -62,7 +62,6 @@
 </template>
 <script>
 import ".././iconfont/iconfont.css";
-import { _axios } from "@/plugins/axios.js";
 export default {
   name: "modifomy",
   data() {
@@ -75,14 +74,6 @@ export default {
       stylemodifycard: "stylemodify",
       stylemodify: "stylemodify",
       mineAccount: {},
-      // mineAccountlist: {
-      //   username: "",
-      //   account: "",
-      //   cardNo: "",
-      //   faceUrl: "",
-      //   id: 1,
-      //   isAuthentication: "",
-      // },
     };
   },
   methods: {
@@ -140,10 +131,9 @@ export default {
           delete this.mineAccount.updatedTime;
           delete this.mineAccount.sex;
           await this.$axios.put(
-            `http://123.56.59.201/api/user/${this.$store.state.login.Info}`,
+            `http://123.56.59.201/api/user/${this.$store.state.login.infoId}`,
             this.mineAccount
           );
-          console.log(this.mineAccount);
         } else {
           this.cardNo();
         }
@@ -166,7 +156,9 @@ export default {
       }
     },
     async nameuser() {
-      let { data } = await _axios.get("http://123.56.59.201/api/user/1");
+      let { data } = await this.$axios.get(
+        `/user/${this.$store.state.login.infoId}`
+      );
       console.log(data);
       this.mineAccount = data;
     },

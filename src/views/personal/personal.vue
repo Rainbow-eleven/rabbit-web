@@ -1,6 +1,6 @@
 <template>
   <div class="centent">
-    <div v-if="$store.state.login.Info == ''">
+    <div v-if="$store.state.login.infoId == ''">
       <span @click="jumpLogin" class="jumpLogin">您还没有登录，请先登录</span>
     </div>
     <div v-else>
@@ -53,22 +53,10 @@
               }}</span>
             </p>
             <p>创建时间：{{ time }}</p>
-            <!-- <div v-if="mineAccount.evaluation == ''">
-            <span>个人评价：您还没有自己的评价</span>
-          </div>
-          <div
-            class="evaluationTotal"
-            v-else-if="mineAccount.evaluation !== ''"
-          >
-            <span class="evaluationName iconfont icon-pingjia"></span>
-            <p class="Evaluation">
-              {{ mineAccount.evaluation }}
-            </p>
-          </div> -->
           </div>
         </div>
       </div>
-      <!-- v-else-if="numberUnits == 2" -->
+
       <Password
         :notice="mineAccount.password"
         @ctChanges="ctChanges"
@@ -88,7 +76,6 @@ import Password from "./component/changePassword";
 import avatar from "./component/avatar";
 import modifomy from "./component/modifomy";
 import "./iconfont/iconfont.css";
-import { _axios } from "@/plugins/axios.js";
 export default {
   name: "myAccount",
   components: {
@@ -106,21 +93,9 @@ export default {
       passwordClass: "",
       time: "",
       headersOption: {
-        Authorization: `Bearer ${this.$store.state.login.token}`,
+        Authorization: `${this.$store.state.login.token}`,
       },
-      mineAccount: {
-        // faceUrl:
-        //   "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1561204147,3725236709&fm=26&gp=0.jpg",
-        // username: "小男孩",
-        // sex: 1,
-        // isAuthentication: 1,
-        // name: "李子亮",
-        // cardNo: "111111111111111111",
-        // cellphoneNumber: "15603107927",
-        // password: "1409410318",
-        // createdTime: "2020-10-22T10:29:11.842Z",
-        // updatedTime: "2020-10-29T07:38:32.000Z",
-      },
+      mineAccount: {},
     };
   },
   methods: {
@@ -146,8 +121,8 @@ export default {
     },
     async nameuser() {
       this.loading = true;
-      let { data } = await _axios.get(
-        `http://123.56.59.201/api/user/${this.$store.state.login.Info}`
+      let { data } = await this.$axios.get(
+        `/user/${this.$store.state.login.infoId}`
       );
       this.mineAccount = data;
       this.dadwas();
@@ -172,9 +147,11 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$store.state.login.Info);
     this.nameuser();
   },
+  created(){
+    console.log(this.$store.state.login.infoId);
+  }
 };
 </script>
 <style scoped>
@@ -197,11 +174,6 @@ export default {
   border: 1px solid #000;
 }
 
-/* body *,
-body *:before,
-body *:after {
-  box-sizing: inherit;
-} */
 
 .box {
   display: inline-block;
