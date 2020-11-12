@@ -6,11 +6,12 @@
         $route.path == '/' ||
         $route.path == '/list' ||
         $route.path == '/Offer' ||
-        $route.path == '/personal'
+        $route.path == '/personal' ||
+        $route.path == '/home'
       "
     >
-      <img src="./logo.jpg" class="logoImg" />
-      <img src="./01.jpg" alt="" />
+      <img src="../img/logo.jpg" class="logoImg" />
+      <img src="../img/01.jpg" alt="" />
       <p align="right">1分钟快速备份手机数据轻松操作快如闪电</p>
     </div>
     <div
@@ -19,7 +20,7 @@
         $route.path == '/MaintainAssess' || $route.path == '/CustomerService'
       "
     >
-      <img src="./logo.jpg" class="logoImg" />
+      <img src="../img/logo.jpg" class="logoImg" />
       <ul>
         <li>旧机维修</li>
         <!-- 判断旧机维修是否显示 -->
@@ -38,7 +39,8 @@
         $route.path == '/list' ||
         $route.path == '/FaultState' ||
         $route.path == '/MaintainAssess' ||
-        $route.path == '/personal'
+        $route.path == '/personal' ||
+        $route.path == '/home'
       "
     ></searchBar>
 

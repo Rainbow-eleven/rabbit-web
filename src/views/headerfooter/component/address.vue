@@ -126,4 +126,20 @@ export default {
   color: #fff;
   border-radius: 0.3125rem;
 }
+.addresse {
+  position: absolute;
+  top: 3.125rem;
+  visibility: hidden;
+  overflow: hidden;
+  width: 0;
+  height: 0;
+  transition: all 0.5s;
+}
+.left-area:hover .addresse {
+  position: absolute;
+  width: 25rem;
+  height: 31.25rem;
+  top: 3.125rem;
+  visibility: initial;
+}
 </style>
