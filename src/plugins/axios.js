@@ -1,10 +1,9 @@
-"use strict";
 import Vue from "vue";
 import axios from "axios";
-
+// import store from "vuex";
 let config = {
   // 配置 默认路径
-  baseURL: "http://123.56.59.201/api/",
+  baseURL: "https://www.muddyrain.com/api/",
   // 延时
   // timeout: 60 * 1000, // Timeout
   // 跨域请求是否提供凭据信息  检查跨站点访问控制
@@ -29,14 +28,16 @@ _axios.interceptors.request.use(
 );
 // axios 响应拦截器  包含[请求头以及请求参数等等]
 _axios.interceptors.response.use(
-  function (response) {
+  (response) => {
+    // this.$store.commit("home/loadingChange", false);
     return response;
   },
-  function (error) {
+  (error) => {
+    // this.$store.commit("home/loadingChange", false);
     return Promise.reject(error);
   }
 );
-Plugin.install = function (Vue) {
+Plugin.install = function(Vue) {
   Vue.axios = _axios;
   window.axios = _axios;
   Object.defineProperties(Vue.prototype, {

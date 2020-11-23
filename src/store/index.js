@@ -2,7 +2,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 import user from "./moduleUser";
 import moduleLogin from "./moduleLogin";
-import list from './moduleList'
+import list from "./moduleList";
+import ModuleHome from "./moduleHome";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -16,7 +17,8 @@ export default new Vuex.Store({
   modules: {
     user,
     login: moduleLogin,
-    list
+    list,
+    home: ModuleHome,
   },
   // 计算属性
   getters: {},

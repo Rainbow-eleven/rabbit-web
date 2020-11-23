@@ -12,7 +12,6 @@
     <Footer
       v-if="$router.history.current.name !== 'login' ? 'login' : ''"
     ></Footer>
-    屹屹
   </div>
 </template>
 
@@ -27,12 +26,15 @@ export default {
       login: false,
     };
   },
-  mounted() {
-    // console.log(this.);
-  },
 };
 </script>
 <style lang="scss">
 @import "./assets/css/transition/fade.scss";
 @import "./assets/css/global/index.scss";
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 </style>
