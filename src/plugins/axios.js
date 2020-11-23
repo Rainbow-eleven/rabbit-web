@@ -17,7 +17,7 @@ _axios.interceptors.request.use(
       console.log("login");
     } else {
       if (localStorage.getItem("token")) {
-        config.headers.Authorizatior = localStorage.getItem("token");
+        config.headers.Authorization = localStorage.getItem("token");
       }
     }
     return config;

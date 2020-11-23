@@ -134,6 +134,7 @@ export default {
   width: 0;
   height: 0;
   transition: all 0.5s;
+  z-index: 999;
 }
 .left-area:hover .addresse {
   position: absolute;

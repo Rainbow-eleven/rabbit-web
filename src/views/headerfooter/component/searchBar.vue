@@ -55,7 +55,7 @@ export default {
       }
     },
     modelNameClick(e) {
-      this.$router.push("/FaultState", e.id);
+      this.$router.push(`/FaultState/${e.id}`);
     },
   },
   watch: {

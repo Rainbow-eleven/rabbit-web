@@ -26,7 +26,7 @@
         <ul>
           <li>
             <router-link to="/" class="prompt-hover">
-              登录
+              {{ $store.state.login.token ? "注销" : "登录" }}
               <div class="Mouse-prompt">
                 <span class="iconfont icon-lingxing iconfont-lingxing"></span
                 >注册领<span class="price">￥799</span>新人礼包

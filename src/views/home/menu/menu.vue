@@ -135,7 +135,6 @@ export default {
         }
       });
       this.brandArr = modelArr;
-      console.log(this.brandArr);
     },
     async obtainModel(id) {
       let { data } = await this.$axios.get(`/model`);
